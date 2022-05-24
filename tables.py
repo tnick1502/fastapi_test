@@ -1,13 +1,33 @@
-import sqlalchemy
+from sqlalchemy import (
+    Column,
+    Date,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+)
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
 
 Base = declarative_base()
 
-class Operation(Base):
-    __tablename__ = "operations"
 
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    date = sqlalchemy.Column(sqlalchemy.Date)
-    kind = sqlalchemy.Column(sqlalchemy.String)
-    amount = sqlalchemy.Column(sqlalchemy.Numeric(10, 2)) #точность 10 знаков после запятой
-    description = sqlalchemy.Column(sqlalchemy.String, nullable=True) #необязательный параметр
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, unique=True)
+    username = Column(String, unique=True)
+    password_hash = Column(String)
+
+
+class Operation(Base):
+    __tablename__ = 'operations'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), index=True)
+    date = Column(Date)
+    kind = Column(String)
+    amount = Column(Numeric(10, 2))
+    description = Column(String, nullable=True)

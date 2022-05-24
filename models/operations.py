@@ -9,8 +9,7 @@ class OperationKind(str, Enum):
     INCOME = "income"
     OUTCOME = "outcome"
 
-class Operation(BaseModel):
-    id: int
+class OperationBase(BaseModel):
     date: date
     kind: OperationKind
     amount: Decimal
@@ -18,3 +17,12 @@ class Operation(BaseModel):
 
     class Config:
         orm_mode = True
+
+class Operation(OperationBase):
+    id: int
+
+class OperationCreate(OperationBase):
+    pass
+
+class OperationUpdate(OperationBase):
+    pass
